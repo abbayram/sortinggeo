@@ -5,105 +5,167 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mega-Sorting Engine</title>
     <style>
-        :root { --bg: #1a1a1a; --card: #2d2d2d; --accent: #ff4500; --correct: #2ecc71; --wrong: #e74c3c; --text: #fff; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        
-        /* Dashboard Styles */
-        #dashboard { max-width: 800px; width: 100%; display: block; }
-        .quiz-card { background: var(--card); padding: 20px; border-radius: 10px; margin-bottom: 15px; cursor: pointer; border-left: 5px solid var(--accent); transition: 0.2s; text-decoration: none; color: white; display: block; }
-        .quiz-card:hover { transform: scale(1.02); background: #3d3d3d; }
+        :root {
+            --bg: #121212;
+            --card: #1e1e1e;
+            --accent: #ff4500;
+            --correct: #2ecc71;
+            --wrong: #e74c3c;
+            --text: #ffffff;
+            --border: #333;
+        }
 
-        /* Game System Styles */
-        #game-system { display: none; max-width: 900px; width: 100%; position: relative; background: var(--card); padding: 30px; border-radius: 15px; text-align: center; }
-        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        #timer { font-size: 2em; font-weight: bold; font-family: monospace; }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Dashboard */
+        #dashboard { max-width: 800px; width: 100%; text-align: center; }
+        .quiz-card { 
+            background: var(--card); padding: 25px; border-radius: 12px; 
+            margin-bottom: 20px; cursor: pointer; border-left: 6px solid var(--accent); 
+            text-decoration: none; color: white; display: block; transition: 0.3s;
+            text-align: left;
+        }
+        .quiz-card:hover { transform: translateY(-3px); background: #252525; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+
+        /* Game System Layout */
+        #game-system { display: none; max-width: 1000px; width: 100%; position: relative; background: var(--card); padding: 30px; border-radius: 20px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
         
-        /* Pause Overlay */
-        #pause-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 100; border-radius: 15px; display: none; flex-direction: column; justify-content: center; align-items: center; }
-        
-        /* UI Elements */
-        .checkbox-row { display: flex; justify-content: center; gap: 8px; margin: 15px 0; }
-        .box { width: 25px; height: 25px; border: 2px solid white; display: flex; align-items: center; justify-content: center; }
-        .nav-btn { background: none; border: 2px solid white; color: white; padding: 8px 20px; border-radius: 20px; cursor: pointer; margin: 0 10px; }
-        
-        #grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 20px; }
-        .item-btn { padding: 10px 15px; background: #444; color: white; border: 1px solid #555; border-radius: 6px; cursor: pointer; }
-        .item-btn.correct { background: var(--correct); opacity: 0.4; pointer-events: none; }
-        
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        #timer { font-size: 2.5em; font-weight: bold; font-family: 'Courier New', monospace; color: var(--accent); }
+        .score-box { font-size: 1.2em; font-weight: bold; }
+
+        /* Pause & Overlays */
+        #pause-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; border-radius: 20px; display: none; flex-direction: column; justify-content: center; align-items: center; }
         #game-over { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--wrong); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 200; }
+        .btn-large { padding: 15px 40px; font-size: 1.2em; cursor: pointer; border: none; border-radius: 50px; background: var(--accent); color: white; font-weight: bold; }
+
+        /* Slots / Checkboxes */
+        #prompt-text { font-size: 1.8em; margin-bottom: 10px; min-height: 1.2em; }
+        .checkbox-row { display: flex; justify-content: center; gap: 12px; margin: 25px 0; flex-wrap: wrap; }
+        .box { 
+            width: 40px; height: 40px; border: 2px solid #444; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; 
+            font-weight: bold; font-size: 22px; transition: 0.2s; background: #111;
+        }
+        .box.active { border-color: var(--accent); transform: scale(1.15); box-shadow: 0 0 15px rgba(255, 69, 0, 0.4); border-width: 3px; }
+        .box.filled { color: var(--correct); border-color: var(--correct); background: rgba(46, 204, 113, 0.1); }
+
+        /* Navigation */
+        .nav-area { display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; }
+        .nav-btn { background: #333; border: 2px solid #555; color: white; padding: 12px 35px; border-radius: 30px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .nav-btn:hover { background: #444; border-color: white; }
+
+        /* Answer Grid */
+        #grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; border-top: 1px solid var(--border); padding-top: 30px; }
+        .item-btn { 
+            padding: 12px 18px; background: #2a2a2a; color: #ddd; border: 1px solid #444; 
+            border-radius: 8px; cursor: pointer; font-size: 14px; transition: 0.15s;
+            flex-grow: 1; min-width: 150px; max-width: 250px;
+        }
+        .item-btn:hover { background: #333; color: white; border-color: var(--accent); }
+        .item-btn.solved { opacity: 0.15; pointer-events: none; transform: scale(0.95); }
+
+        .hidden-content { visibility: hidden; }
     </style>
 </head>
 <body>
 
 <div id="dashboard">
-    <h1>Wähle ein Quiz</h1>
+    <h1>Mega-Sorting Gallery</h1>
+    <p>Wähle ein Thema und sortiere die Begriffe – Aber Vorsicht: Ein Fehler beendet das Spiel!</p>
+    <br>
     <a href="?quiz=vulkane" class="quiz-card">
         <h3>🌋 Vulkanismus Spezial</h3>
-        <p>Expertentest über Eruptionen und Vulkantypen (8 bis 1 Modus).</p>
+        <p>Einheiten, Typen und globale Folgen. (36 Begriffe | 8 Min.)</p>
     </a>
-    </div>
+</div>
 
 <div id="game-over">
-    <h1>GAME OVER</h1>
-    <p>Ein Fehler beendet das Spiel!</p>
-    <button onclick="location.search=''" style="padding: 10px 20px; cursor:pointer;">Zurück zum Menü</button>
+    <h1 style="font-size: 4em; margin-bottom: 10px;">GAME OVER</h1>
+    <p style="font-size: 1.5em; margin-bottom: 30px;">Das war leider die falsche Antwort.</p>
+    <button class="btn-large" onclick="location.search=''">ZUM HAUPTMENÜ</button>
 </div>
 
 <div id="game-system">
     <div id="pause-overlay">
-        <h1>PAUSE</h1>
-        <button onclick="togglePause()" style="padding: 15px 30px; cursor:pointer;">Weiter</button>
+        <h1 style="font-size: 3em; margin-bottom: 20px;">SPIEL PAUSIERT</h1>
+        <button class="btn-large" onclick="togglePause()">WEITER SPIELEN</button>
     </div>
 
     <div class="header-top">
         <div id="timer">08:00</div>
-        <button onclick="togglePause()">Pause</button>
-        <div>Score: <span id="score">0</span></div>
+        <button onclick="togglePause()" style="background:none; border: 1px solid #666; color:#999; padding: 8px 15px; border-radius:5px; cursor:pointer;">PAUSE</button>
+        <div class="score-box">PUNKTE: <span id="score">0</span> / <span id="max-score">0</span></div>
     </div>
 
-    <h2 id="prompt-text">Lädt...</h2>
-    <div class="checkbox-row" id="checkboxes"></div>
+    <div id="game-main-area">
+        <h2 id="prompt-text">Lädt...</h2>
+        <div class="checkbox-row" id="checkboxes"></div>
 
-    <div class="nav-area">
-        <button class="nav-btn" onclick="navLevel(-1)">← PREV</button>
-        <button class="nav-btn" onclick="navLevel(1)">NEXT →</button>
+        <div class="nav-area">
+            <button class="nav-btn" onclick="moveSlot(-1)">← PREV</button>
+            <button class="nav-btn" onclick="moveSlot(1)">NEXT →</button>
+        </div>
+
+        <div id="grid"></div>
     </div>
-
-    <div id="grid"></div>
 </div>
 
 <script>
-    let quizData = null; // Wird dynamisch geladen
-    let currentLevelIdx = 0;
-    let solvedData = [];
+    let rawData = [];
+    let allSlots = []; 
+    let currentSlotIdx = 0;
     let timeLeft = 8 * 60;
     let isPaused = false;
     let timerInterval;
 
-    // 1. Prüfen welches Quiz geladen werden soll
     const urlParams = new URLSearchParams(window.location.search);
     const quizName = urlParams.get('quiz');
 
     if (quizName) {
         document.getElementById('dashboard').style.display = 'none';
         document.getElementById('game-system').style.display = 'block';
-        loadQuizScript(quizName);
+        loadQuiz(quizName);
     }
 
-    function loadQuizScript(name) {
+    function loadQuiz(name) {
         const script = document.createElement('script');
-        script.src = `levels/${name}.js`; // Lädt z.B. levels/vulkane.js
+        script.src = `levels/${name}.js`;
         script.onload = () => {
-            // Die geladene JS-Datei muss eine globale Variable 'levelData' definieren
-            quizData = levelData; 
+            rawData = levelData;
+            setupSlots();
             startGame();
         };
+        script.onerror = () => alert("Level-Datei konnte nicht geladen werden.");
         document.head.appendChild(script);
     }
 
+    function setupSlots() {
+        allSlots = [];
+        rawData.forEach((level, lIdx) => {
+            for (let i = 0; i < level.count; i++) {
+                allSlots.push({
+                    categoryTitle: level.q,
+                    validAnswers: level.targets,
+                    levelIndex: lIdx,
+                    filledWith: null
+                });
+            }
+        });
+        document.getElementById('max-score').textContent = allSlots.length;
+    }
+
     function startGame() {
-        solvedData = quizData.map(l => ({ found: [], total: l.count }));
-        renderLevel();
+        renderUI();
         renderGrid();
         startTimer();
     }
@@ -123,62 +185,86 @@
     function togglePause() {
         isPaused = !isPaused;
         document.getElementById('pause-overlay').style.display = isPaused ? 'flex' : 'none';
+        document.getElementById('game-main-area').className = isPaused ? 'hidden-content' : '';
     }
 
-    function renderLevel() {
-        const lvl = quizData[currentLevelIdx];
-        document.getElementById('prompt-text').textContent = lvl.q;
+    function renderUI() {
+        const currentSlot = allSlots[currentSlotIdx];
+        document.getElementById('prompt-text').textContent = currentSlot.categoryTitle;
+        
         const cbContainer = document.getElementById('checkboxes');
         cbContainer.innerHTML = '';
-        for (let i = 0; i < lvl.count; i++) {
-            const box = document.createElement('div');
-            box.className = 'box';
-            if (i < solvedData[currentLevelIdx].found.length) box.textContent = '☒';
-            cbContainer.appendChild(box);
-        }
+        
+        allSlots.forEach((slot, idx) => {
+            if (slot.levelIndex === currentSlot.levelIndex) {
+                const box = document.createElement('div');
+                box.className = 'box';
+                if (idx === currentSlotIdx) box.classList.add('active');
+                if (slot.filledWith) {
+                    box.classList.add('filled');
+                    box.textContent = '☒';
+                }
+                cbContainer.appendChild(box);
+            }
+        });
+    }
+
+    function moveSlot(step) {
+        currentSlotIdx = (currentSlotIdx + step + allSlots.length) % allSlots.length;
+        renderUI();
     }
 
     function renderGrid() {
         const grid = document.getElementById('grid');
-        let allItems = [];
-        quizData.forEach(l => allItems.push(...l.targets));
-        allItems.sort(() => Math.random() - 0.5).forEach(item => {
+        grid.innerHTML = '';
+        
+        let words = [];
+        rawData.forEach(l => words.push(...l.targets));
+        
+        // ALPHABETISCHE SORTIERUNG
+        words.sort((a, b) => a.localeCompare(b, 'de')).forEach(word => {
             const btn = document.createElement('button');
             btn.className = 'item-btn';
-            btn.textContent = item;
-            btn.onclick = () => {
-                if(isPaused) return;
-                const lvl = quizData[currentLevelIdx];
-                if (lvl.targets.includes(item)) {
-                    if (!solvedData[currentLevelIdx].found.includes(item)) {
-                        solvedData[currentLevelIdx].found.push(item);
-                        btn.classList.add('correct');
-                        document.getElementById('score').textContent = solvedData.reduce((a,b) => a + b.found.length, 0);
-                        renderLevel();
-                        if (solvedData[currentLevelIdx].found.length === lvl.count) findNextLevel();
-                    }
-                } else { endGame(); }
-            };
+            btn.textContent = word;
+            btn.onclick = () => handleInput(word, btn);
             grid.appendChild(btn);
         });
     }
 
-    function navLevel(step) {
-        currentLevelIdx = (currentLevelIdx + step + quizData.length) % quizData.length;
-        renderLevel();
+    function handleInput(word, btn) {
+        if (isPaused) return;
+        const currentSlot = allSlots[currentSlotIdx];
+
+        if (currentSlot.validAnswers.includes(word)) {
+            // Prüfen ob Wort schon in einem anderen Slot benutzt wurde
+            if (allSlots.some(s => s.filledWith === word)) return;
+
+            currentSlot.filledWith = word;
+            btn.classList.add('solved');
+            
+            const currentTotal = allSlots.filter(s => s.filledWith).length;
+            document.getElementById('score').textContent = currentTotal;
+
+            if (currentTotal === allSlots.length) {
+                clearInterval(timerInterval);
+                alert("HERAUSRAGEND! Du hast das Quiz perfekt gelöst!");
+            } else {
+                findNextEmptySlot();
+            }
+        } else {
+            endGame(); // Sudden Death bei falscher Antwort
+        }
     }
 
-    function findNextLevel() {
-        let found = false;
-        for(let i=0; i<quizData.length; i++) {
-            let idx = (currentLevelIdx + i) % quizData.length;
-            if(solvedData[idx].found.length < quizData[idx].total) {
-                currentLevelIdx = idx;
-                renderLevel();
-                found = true; break;
+    function findNextEmptySlot() {
+        for (let i = 1; i <= allSlots.length; i++) {
+            let next = (currentSlotIdx + i) % allSlots.length;
+            if (!allSlots[next].filledWith) {
+                currentSlotIdx = next;
+                renderUI();
+                return;
             }
         }
-        if(!found) { clearInterval(timerInterval); alert("Gewonnen!"); }
     }
 
     function endGame() {
@@ -186,5 +272,6 @@
         document.getElementById('game-over').style.display = 'flex';
     }
 </script>
+
 </body>
 </html>
