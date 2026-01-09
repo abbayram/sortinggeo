@@ -8,7 +8,7 @@
         :root {
             --bg: #121212;
             --card: #1e1e1e;
-            --accent: #3498db; /* Blau-Ton für Geografie */
+            --accent: #3498db; /* Geografie-Blau */
             --correct: #2ecc71;
             --wrong: #e74c3c;
             --text: #ffffff;
@@ -27,144 +27,149 @@
         }
 
         /* --- DASHBOARD --- */
-        #dashboard { max-width: 900px; width: 100%; text-align: center; }
-        .back-link { color: #888; text-decoration: none; font-size: 0.9em; display: block; margin-bottom: 20px; transition: 0.2s; }
+        #dashboard { max-width: 1000px; width: 100%; text-align: center; }
+        .back-link { color: #888; text-decoration: none; font-size: 0.9em; display: block; margin-bottom: 20px; }
         .back-link:hover { color: var(--text); }
         
+        .section-header { text-align: left; margin: 30px 0 15px 5px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 5px; font-size: 1.2em; font-weight: bold; }
+        
+        .quiz-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; margin-bottom: 40px; }
+        
         .quiz-card { 
-            background: var(--card); padding: 20px; border-radius: 12px; 
-            margin-bottom: 15px; cursor: pointer; border-left: 6px solid var(--accent); 
-            text-decoration: none; color: white; display: block; transition: 0.3s;
+            background: var(--card); padding: 18px; border-radius: 12px; 
+            cursor: pointer; border-left: 5px solid var(--accent); 
+            text-decoration: none; color: white; display: flex; flex-direction: column; transition: 0.3s;
             text-align: left;
         }
-        .quiz-card:hover { transform: translateY(-3px); background: #252525; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        .quiz-card h3 { margin: 0 0 5px 0; color: var(--accent); }
-        .quiz-card p { margin: 0; font-size: 0.85em; color: #bbb; line-height: 1.4; }
+        .quiz-card:hover { transform: translateY(-3px); background: #252525; box-shadow: 0 8px 15px rgba(0,0,0,0.3); }
+        .quiz-card h3 { margin: 0 0 5px 0; font-size: 1.1em; color: var(--text); }
+        .quiz-card p { margin: 0; font-size: 0.8em; color: #bbb; line-height: 1.4; }
 
         /* --- GAME SYSTEM --- */
         #game-system { display: none; max-width: 1000px; width: 100%; position: relative; background: var(--card); padding: 30px; border-radius: 20px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
-        
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
         #timer { font-size: 2.5em; font-weight: bold; font-family: 'Courier New', monospace; color: var(--accent); }
-        .score-box { font-size: 1.2em; font-weight: bold; }
-
         #pause-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; border-radius: 20px; display: none; flex-direction: column; justify-content: center; align-items: center; }
         #game-over { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--wrong); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 200; }
         .btn-large { padding: 15px 40px; font-size: 1.2em; cursor: pointer; border: none; border-radius: 50px; background: var(--accent); color: white; font-weight: bold; }
 
         #prompt-text { font-size: 1.6em; margin-bottom: 10px; min-height: 1.2em; }
         .checkbox-row { display: flex; justify-content: center; gap: 10px; margin: 25px 0; flex-wrap: wrap; }
-        .box { 
-            width: 35px; height: 35px; border: 2px solid #444; border-radius: 8px;
-            display: flex; align-items: center; justify-content: center; 
-            font-weight: bold; font-size: 18px; transition: 0.2s; background: #111;
-        }
-        .box.active { border-color: var(--accent); transform: scale(1.15); box-shadow: 0 0 15px rgba(52, 152, 219, 0.4); border-width: 3px; }
+        .box { width: 35px; height: 35px; border: 2px solid #444; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; transition: 0.2s; background: #111; }
+        .box.active { border-color: var(--accent); transform: scale(1.15); border-width: 3px; }
         .box.filled { color: var(--correct); border-color: var(--correct); background: rgba(46, 204, 113, 0.1); }
 
         .nav-area { display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; }
-        .nav-btn { background: #333; border: 2px solid #555; color: white; padding: 12px 35px; border-radius: 30px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        .nav-btn:hover { background: #444; border-color: white; }
+        .nav-btn { background: #333; border: 2px solid #555; color: white; padding: 12px 35px; border-radius: 30px; cursor: pointer; font-weight: bold; }
 
         #grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; border-top: 1px solid var(--border); padding-top: 30px; }
-        .item-btn { 
-            padding: 10px 15px; background: #2a2a2a; color: #ddd; border: 1px solid #444; 
-            border-radius: 8px; cursor: pointer; font-size: 13px; transition: 0.15s;
-            flex-grow: 1; min-width: 140px; max-width: 220px;
-        }
-        .item-btn:hover { background: #333; color: white; border-color: var(--accent); }
-        .item-btn.solved { opacity: 0.15; pointer-events: none; transform: scale(0.95); }
-
+        .item-btn { padding: 10px 15px; background: #2a2a2a; color: #ddd; border: 1px solid #444; border-radius: 8px; cursor: pointer; font-size: 13px; flex-grow: 1; min-width: 140px; max-width: 220px; }
+        .item-btn:hover { background: #333; border-color: var(--accent); }
+        .item-btn.solved { opacity: 0.15; pointer-events: none; }
         .hidden-content { visibility: hidden; }
     </style>
 </head>
 <body>
 
 <div id="dashboard">
-    <a href="index.html" class="back-link">← Zum Hauptportal</a>
-    <h1>🌍 Mega-Sorting: Geografie</h1>
-    <p>Ordne geowissenschaftliche Begriffe den richtigen Kategorien zu.</p>
-    <br>
+    <a href="index.html" class="back-link">← Zurück zum Hauptportal</a>
+    <h1>🌍 Mega-Sorting: Geowissenschaften</h1>
+    <p>Organisierte Module basierend auf dem Curriculum 2025/26.</p>
 
-    <a href="?quiz=geologie" class="quiz-card">
-        <h3>🗿 Geologie & Erdgeschichte</h3>
-        <p>Vom Schalenbau der Erde bis zur Stratigraphie und dem Kalendermodell der Erdentwicklung.</p>
-    </a>
+    <div class="section-header">🗿 Physische Geographie & Geologie</div>
+    <div class="quiz-grid">
+        <a href="?quiz=geologie" class="quiz-card">
+            <h3>Geologie & Erdgeschichte</h3>
+            <p>Schalenbau, Zeitskala und Stratigraphie.</p>
+        </a>
+        <a href="?quiz=minerale_gesteine" class="quiz-card">
+            <h3>Minerale & Gesteine</h3>
+            <p>Eigenschaften, chemische Klassen und Gesteinskreislauf.</p>
+        </a>
+        <a href="?quiz=tektonik" class="quiz-card">
+            <h3>Tektonik & Struktur</h3>
+            <p>Deformationen, Störungen und Himalaya-Orogenese.</p>
+        </a>
+        <a href="?quiz=historische_geologie" class="quiz-card">
+            <h3>Hist. Geologie & Klima</h3>
+            <p>Proxy-Archive, Datierung und Paläoklimatologie.</p>
+        </a>
+    </div>
 
-    <a href="?quiz=minerale_gesteine" class="quiz-card">
-        <h3>💎 Minerale & Gesteine</h3>
-        <p>Physikalische Eigenschaften, chemische Zusammensetzung und der Kreislauf der Gesteine.</p>
-    </a>
+    <div class="section-header" style="color: #2980b9;">🌤️ Klimatologie & Atmosphäre</div>
+    <div class="quiz-grid">
+        <a href="?quiz=klimatologie" class="quiz-card" style="border-left-color: #2980b9;">
+            <h3>Grundlagen & Strahlung</h3>
+            <p>Solarkonstante, Albedo und Strahlungsbilanz.</p>
+        </a>
+        <a href="?quiz=klimatologie_prozesse" class="quiz-card" style="border-left-color: #2980b9;">
+            <h3>Atmosphärische Prozesse</h3>
+            <p>Luftfeuchte, Phasenübergänge und Föhn.</p>
+        </a>
+        <a href="?quiz=klimatologie_dynamik" class="quiz-card" style="border-left-color: #2980b9;">
+            <h3>Dynamik & Windsysteme</h3>
+            <p>Corioliskraft, Hoch/Tief und kleinräumige Winde.</p>
+        </a>
+        <a href="?quiz=klimazonen_zirkulation" class="quiz-card" style="border-left-color: #2980b9;">
+            <h3>Globale Zirkulation (AZA)</h3>
+            <p>Hadley-Zelle, ITCZ und außertropische Zyklonen.</p>
+        </a>
+        <a href="?quiz=klimawandel_klassifikation" class="quiz-card" style="border-left-color: #2980b9;">
+            <h3>Klimawandel & Köppen</h3>
+            <p>Klimaklassifikationen und IPCC-Syntheseberichte.</p>
+        </a>
+    </div>
 
-    <a href="?quiz=tektonik" class="quiz-card">
-        <h3>🏔️ Tektonik & Strukturgeologie</h3>
-        <p>Deformationsarten, Störungen und das Fallbeispiel der Himalaya-Orogenese.</p>
-    </a>
-
-    <a href="?quiz=historische_geologie" class="quiz-card">
-        <h3>🕰️ Historische Geologie & Paläoklimatologie</h3>
-        <p>Proxy-Archive wie Eisbohrkerne und Datierungsmethoden der Erdgeschichte.</p>
-    </a>
-
-    <a href="?quiz=klimatologie" class="quiz-card" style="border-left-color: #2980b9;">
-        <h3>☀️ Grundlagen der Klimatologie</h3>
-        <p>Strahlungsgesetze, Albedo und die Solarkonstante von $1361~W/m^2$.</p>
-    </a>
-
-    <a href="?quiz=klimatologie_prozesse" class="quiz-card" style="border-left-color: #2980b9;">
-        <h3>💧 Atmosphärische Prozesse</h3>
-        <p>Phasenübergänge des Wassers, Wolkenbildung und thermodynamische Gradienten.</p>
-    </a>
-
-    <a href="?quiz=klimatologie_dynamik" class="quiz-card" style="border-left-color: #f39c12;">
-        <h3>🌪️ Windsysteme & Dynamik</h3>
-        <p>Corioliskraft, kleinräumige Zirkulationen und das geostrophische Gleichgewicht.</p>
-    </a>
-
-    <a href="?quiz=klimazonen_zirkulation" class="quiz-card" style="border-left-color: #16a085;">
-        <h3>🌀 Globale Zirkulation & Zellen</h3>
-        <p>Die Hadley-Zelle, ITCZ und der Lebenszyklus außertropischer Zyklonen.</p>
-    </a>
-
-    <a href="?quiz=klimawandel_klassifikation" class="quiz-card" style="border-left-color: #c0392b;">
-        <h3>🌡️ Klimawandel & Klassifikation</h3>
-        <p>Köppen-Geiger-System und die aktuellen Syntheseberichte des IPCC.</p>
-    </a>
-
-    <a href="?quiz=vulkane" class="quiz-card">
-        <h3>🌋 Vulkanismus Spezial</h3>
-        <p>Eruptionstypen, Magmenzusammensetzung und vulkanische Gefahren.</p>
-    </a>
-
-    <a href="?quiz=nargis" class="quiz-card">
-        <h3>🌪️ Fallstudie: Zyklon Nargis</h3>
-        <p>Analyse von Verwundbarkeit und politischer Reaktion in Myanmar.</p>
-    </a>
-
-    <a href="?quiz=wasserkreislauf" class="quiz-card">
-        <h3>🌊 Hydrologie & Wasserkreislauf</h3>
-        <p>Globale Speicher, Prozesse und der menschliche Wasserfußabdruck.</p>
-    </a>
+    <div class="section-header" style="color: #9b59b6;">📚 Humangeographie & Theorie</div>
+    <div class="quiz-grid">
+        <a href="?quiz=humangeographie_theorie" class="quiz-card" style="border-left-color: #9b59b6;">
+            <h3>Theorie der Humangeographie</h3>
+            <p>Wissenschaftstheorie, Poppers Falsifikation und Hypothesen.</p>
+        </a>
+        <a href="?quiz=laenderkunde" class="quiz-card" style="border-left-color: #9b59b6;">
+            <h3>Etappe I: Länderkunde</h3>
+            <p>Klassische Geographie, Humboldt, Ritter und Hettner.</p>
+        </a>
+        <a href="?quiz=gesellschaftsorientierung" class="quiz-card" style="border-left-color: #9b59b6;">
+            <h3>Etappe II: Raumwissenschaft</h3>
+            <p>Quantifizierung, Nomothetik und Münchner Sozialgeographie.</p>
+        </a>
+        <a href="?quiz=humangeographie_postmoderne" class="quiz-card" style="border-left-color: #9b59b6;">
+            <h3>Etappe III: Postmoderne</h3>
+            <p>Cultural Turn, Dekonstruktion und Ost-West-Debatte.</p>
+        </a>
+        <a href="?quiz=humangeographie_vertiefung" class="quiz-card" style="border-left-color: #9b59b6;">
+            <h3>Vertiefung: Diskurs & Raum</h3>
+            <p>Machtasymmetrien und die vier zentralen Raumbegriffe.</p>
+        </a>
+        <a href="?quiz=humangeographie_konstruktivismus" class="quiz-card" style="border-left-color: #9b59b6;">
+            <h3>Konstruktivismus & Gender</h3>
+            <p>Doing Gender, heteronormative Matrix und Judith Butler.</p>
+        </a>
+        <a href="?quiz=humangeographie_wende" class="quiz-card" style="border-left-color: #9b59b6;">
+            <h3>The Turns & Armutsräume</h3>
+            <p>Spatial/Material Turn und gemachte Räume.</p>
+        </a>
+        <a href="?quiz=geographie_sozialtheorie" class="quiz-card" style="border-left-color: #9b59b6;">
+            <h3>Sozialtheorie (Bourdieu/Luhmann)</h3>
+            <p>Kapitalformen, Autopoiesis und Handlungszentrierung.</p>
+        </a>
+    </div>
 </div>
 
 <div id="game-over">
-    <h1 style="font-size: 3.5em; margin-bottom: 10px;">GAME OVER</h1>
-    <p style="font-size: 1.3em; margin-bottom: 30px;">Das war leider falsch. Ein Geograf irrt sich nie – er interpretiert nur neu!</p>
+    <h1>GAME OVER</h1>
+    <p>Ein Geograf irrt sich nie – er interpretiert nur neu!</p>
     <button class="btn-large" onclick="location.search=''">ZUM DASHBOARD</button>
 </div>
 
 <div id="game-system">
-    <div id="pause-overlay">
-        <h1>SPIEL PAUSIERT</h1>
-        <button class="btn-large" onclick="togglePause()">WEITER SPIELEN</button>
-    </div>
-
+    <div id="pause-overlay"><h1>PAUSE</h1><button class="btn-large" onclick="togglePause()">WEITER</button></div>
     <div class="header-top">
         <div id="timer">08:00</div>
-        <button onclick="togglePause()" style="background:none; border: 1px solid #666; color:#999; padding: 8px 15px; border-radius:5px; cursor:pointer;">PAUSE</button>
+        <button onclick="togglePause()" style="background:none; border:1px solid #666; color:#999; padding:8px 15px; border-radius:5px; cursor:pointer;">PAUSE</button>
         <div class="score-box">PUNKTE: <span id="score">0</span> / <span id="max-score">0</span></div>
     </div>
-
     <div id="game-main-area">
         <h2 id="prompt-text">Lädt...</h2>
         <div class="checkbox-row" id="checkboxes"></div>
@@ -177,31 +182,15 @@
 </div>
 
 <script>
-    let rawData = [];
-    let allSlots = []; 
-    let currentSlotIdx = 0;
-    let timeLeft = 8 * 60;
-    let isPaused = false;
-    let timerInterval;
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const quizName = urlParams.get('quiz');
+    let rawData = []; let allSlots = []; let currentSlotIdx = 0; let timeLeft = 8 * 60; let isPaused = false; let timerInterval;
+    const urlParams = new URLSearchParams(window.location.search); const quizName = urlParams.get('quiz');
 
     if (quizName) {
         document.getElementById('dashboard').style.display = 'none';
         document.getElementById('game-system').style.display = 'block';
-        loadQuiz(quizName);
-    }
-
-    function loadQuiz(name) {
         const script = document.createElement('script');
-        script.src = `levels/${name}.js`;
-        script.onload = () => {
-            rawData = levelData;
-            setupSlots();
-            startGame();
-        };
-        script.onerror = () => alert("Level-Datei konnte nicht geladen werden.");
+        script.src = `levels/${quizName}.js`;
+        script.onload = () => { rawData = levelData; setupSlots(); startGame(); };
         document.head.appendChild(script);
     }
 
@@ -220,9 +209,7 @@
     function startTimer() {
         timerInterval = setInterval(() => {
             if (!isPaused) {
-                timeLeft--;
-                let mins = Math.floor(timeLeft / 60);
-                let secs = timeLeft % 60;
+                timeLeft--; let mins = Math.floor(timeLeft / 60); let secs = timeLeft % 60;
                 document.getElementById('timer').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
                 if (timeLeft <= 0) endGame();
             }
@@ -257,15 +244,11 @@
     }
 
     function renderGrid() {
-        const grid = document.getElementById('grid');
-        grid.innerHTML = '';
-        let words = [];
-        rawData.forEach(l => words.push(...l.targets));
-        // Alphabetische Sortierung
+        const grid = document.getElementById('grid'); grid.innerHTML = '';
+        let words = []; rawData.forEach(l => words.push(...l.targets));
         words.sort((a, b) => a.localeCompare(b, 'de')).forEach(word => {
             const btn = document.createElement('button');
-            btn.className = 'item-btn';
-            btn.textContent = word;
+            btn.className = 'item-btn'; btn.textContent = word;
             btn.onclick = () => handleInput(word, btn);
             grid.appendChild(btn);
         });
@@ -276,18 +259,11 @@
         const currentSlot = allSlots[currentSlotIdx];
         if (currentSlot.validAnswers.includes(word)) {
             if (allSlots.some(s => s.filledWith === word)) return;
-            currentSlot.filledWith = word;
-            btn.classList.add('solved');
+            currentSlot.filledWith = word; btn.classList.add('solved');
             document.getElementById('score').textContent = allSlots.filter(s => s.filledWith).length;
-            if (allSlots.every(s => s.filledWith)) {
-                clearInterval(timerInterval);
-                alert("HERAUSRAGEND! Geowissenschaftlich einwandfrei.");
-            } else {
-                findNextEmptySlot();
-            }
-        } else {
-            endGame();
-        }
+            if (allSlots.every(s => s.filledWith)) { clearInterval(timerInterval); alert("EXZELLENT! Alle Fachbegriffe korrekt zugeordnet."); }
+            else { findNextEmptySlot(); }
+        } else { endGame(); }
     }
 
     function findNextEmptySlot() {
@@ -297,10 +273,7 @@
         }
     }
 
-    function endGame() {
-        clearInterval(timerInterval);
-        document.getElementById('game-over').style.display = 'flex';
-    }
+    function endGame() { clearInterval(timerInterval); document.getElementById('game-over').style.display = 'flex'; }
 </script>
 </body>
 </html>
