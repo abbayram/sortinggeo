@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mega-Sorting Engine</title>
+    <title>Mega-Sorting Gallery - Professional Edition</title>
     <style>
         :root {
             --bg: #121212;
@@ -26,7 +26,7 @@
             align-items: center;
         }
 
-        /* Dashboard */
+        /* --- DASHBOARD --- */
         #dashboard { max-width: 800px; width: 100%; text-align: center; }
         .quiz-card { 
             background: var(--card); padding: 25px; border-radius: 12px; 
@@ -36,19 +36,19 @@
         }
         .quiz-card:hover { transform: translateY(-3px); background: #252525; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
 
-        /* Game System Layout */
+        /* --- GAME SYSTEM --- */
         #game-system { display: none; max-width: 1000px; width: 100%; position: relative; background: var(--card); padding: 30px; border-radius: 20px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
         
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
         #timer { font-size: 2.5em; font-weight: bold; font-family: 'Courier New', monospace; color: var(--accent); }
         .score-box { font-size: 1.2em; font-weight: bold; }
 
-        /* Pause & Overlays */
+        /* --- OVERLAYS --- */
         #pause-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; border-radius: 20px; display: none; flex-direction: column; justify-content: center; align-items: center; }
         #game-over { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--wrong); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 200; }
         .btn-large { padding: 15px 40px; font-size: 1.2em; cursor: pointer; border: none; border-radius: 50px; background: var(--accent); color: white; font-weight: bold; }
 
-        /* Slots / Checkboxes */
+        /* --- GAMEPLAY AREA --- */
         #prompt-text { font-size: 1.8em; margin-bottom: 10px; min-height: 1.2em; }
         .checkbox-row { display: flex; justify-content: center; gap: 12px; margin: 25px 0; flex-wrap: wrap; }
         .box { 
@@ -59,12 +59,10 @@
         .box.active { border-color: var(--accent); transform: scale(1.15); box-shadow: 0 0 15px rgba(255, 69, 0, 0.4); border-width: 3px; }
         .box.filled { color: var(--correct); border-color: var(--correct); background: rgba(46, 204, 113, 0.1); }
 
-        /* Navigation */
         .nav-area { display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; }
         .nav-btn { background: #333; border: 2px solid #555; color: white; padding: 12px 35px; border-radius: 30px; cursor: pointer; font-weight: bold; transition: 0.2s; }
         .nav-btn:hover { background: #444; border-color: white; }
 
-        /* Answer Grid */
         #grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; border-top: 1px solid var(--border); padding-top: 30px; }
         .item-btn { 
             padding: 12px 18px; background: #2a2a2a; color: #ddd; border: 1px solid #444; 
@@ -81,24 +79,37 @@
 
 <div id="dashboard">
     <h1>Mega-Sorting Gallery</h1>
-    <p>Wähle ein Thema und sortiere die Begriffe – Aber Vorsicht: Ein Fehler beendet das Spiel!</p>
+    <p>Wähle ein Thema und fülle die Slots – Alphabetisch sortiert und im Sudden Death Modus.</p>
     <br>
+    
     <a href="?quiz=vulkane" class="quiz-card">
         <h3>🌋 Vulkanismus Spezial</h3>
-        <p>Einheiten, Typen und globale Folgen. (36 Begriffe | 8 Min.)</p>
+        <p>Eigenschaften, Typen und globale Folgen.</p>
+    </a>
+    <a href="?quiz=nargis" class="quiz-card">
+        <h3>🌪️ Zyklon Nargis & Verwundbarkeit</h3>
+        <p>Analyse der Katastrophe in Myanmar.</p>
+    </a>
+    <a href="?quiz=geoswinde" class="quiz-card">
+        <h3>🌬️ Dynamik der Atmosphäre</h3>
+        <p>Globale Windsysteme und physikalische Wellen.</p>
+    </a>
+    <a href="?quiz=wasserkreislauf" class="quiz-card" style="border-left-color: #3498db;">
+        <h3>💧 Wasserkreislauf & Hydrologie</h3>
+        <p>Vom Niederschlag bis zum Grundwasserfluss. (8 bis 1 Modus).</p>
     </a>
 </div>
 
 <div id="game-over">
-    <h1 style="font-size: 4em; margin-bottom: 10px;">GAME OVER</h1>
-    <p style="font-size: 1.5em; margin-bottom: 30px;">Das war leider die falsche Antwort.</p>
+    <h1>GAME OVER</h1>
+    <p>Das war leider falsch. Versuche es erneut!</p>
     <button class="btn-large" onclick="location.search=''">ZUM HAUPTMENÜ</button>
 </div>
 
 <div id="game-system">
     <div id="pause-overlay">
-        <h1 style="font-size: 3em; margin-bottom: 20px;">SPIEL PAUSIERT</h1>
-        <button class="btn-large" onclick="togglePause()">WEITER SPIELEN</button>
+        <h1>PAUSE</h1>
+        <button class="btn-large" onclick="togglePause()">WEITER</button>
     </div>
 
     <div class="header-top">
@@ -145,7 +156,7 @@
             setupSlots();
             startGame();
         };
-        script.onerror = () => alert("Level-Datei konnte nicht geladen werden.");
+        script.onerror = () => alert("Level konnte nicht geladen werden.");
         document.head.appendChild(script);
     }
 
@@ -191,19 +202,14 @@
     function renderUI() {
         const currentSlot = allSlots[currentSlotIdx];
         document.getElementById('prompt-text').textContent = currentSlot.categoryTitle;
-        
         const cbContainer = document.getElementById('checkboxes');
         cbContainer.innerHTML = '';
-        
         allSlots.forEach((slot, idx) => {
             if (slot.levelIndex === currentSlot.levelIndex) {
                 const box = document.createElement('div');
                 box.className = 'box';
                 if (idx === currentSlotIdx) box.classList.add('active');
-                if (slot.filledWith) {
-                    box.classList.add('filled');
-                    box.textContent = '☒';
-                }
+                if (slot.filledWith) { box.classList.add('filled'); box.textContent = '☒'; }
                 cbContainer.appendChild(box);
             }
         });
@@ -217,11 +223,8 @@
     function renderGrid() {
         const grid = document.getElementById('grid');
         grid.innerHTML = '';
-        
         let words = [];
         rawData.forEach(l => words.push(...l.targets));
-        
-        // ALPHABETISCHE SORTIERUNG
         words.sort((a, b) => a.localeCompare(b, 'de')).forEach(word => {
             const btn = document.createElement('button');
             btn.className = 'item-btn';
@@ -234,25 +237,19 @@
     function handleInput(word, btn) {
         if (isPaused) return;
         const currentSlot = allSlots[currentSlotIdx];
-
         if (currentSlot.validAnswers.includes(word)) {
-            // Prüfen ob Wort schon in einem anderen Slot benutzt wurde
             if (allSlots.some(s => s.filledWith === word)) return;
-
             currentSlot.filledWith = word;
             btn.classList.add('solved');
-            
-            const currentTotal = allSlots.filter(s => s.filledWith).length;
-            document.getElementById('score').textContent = currentTotal;
-
-            if (currentTotal === allSlots.length) {
+            document.getElementById('score').textContent = allSlots.filter(s => s.filledWith).length;
+            if (allSlots.every(s => s.filledWith)) {
                 clearInterval(timerInterval);
-                alert("HERAUSRAGEND! Du hast das Quiz perfekt gelöst!");
+                alert("Perfekt gelöst!");
             } else {
                 findNextEmptySlot();
             }
         } else {
-            endGame(); // Sudden Death bei falscher Antwort
+            endGame();
         }
     }
 
@@ -272,6 +269,5 @@
         document.getElementById('game-over').style.display = 'flex';
     }
 </script>
-
 </body>
 </html>
