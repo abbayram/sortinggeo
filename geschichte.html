@@ -3,86 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mega-Sorting: Geschichte</title>
+    <title>Mega-Sorting Gallery - Geschichte</title>
     <style>
-        :root { --bg: #121212; --card: #1e1e1e; --accent: #ef4444; --correct: #2ecc71; --wrong: #e74c3c; --text: #ffffff; --border: #333; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        :root {
+            --bg: #121212;
+            --card: #1e1e1e;
+            --accent: #ef4444; /* Rot-Ton für Geschichte */
+            --correct: #2ecc71;
+            --wrong: #e74c3c;
+            --text: #ffffff;
+            --border: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- DASHBOARD --- */
         #dashboard { max-width: 800px; width: 100%; text-align: center; }
-        .quiz-card { background: var(--card); padding: 25px; border-radius: 12px; margin-bottom: 20px; cursor: pointer; border-left: 6px solid var(--accent); text-decoration: none; color: white; display: block; transition: 0.3s; text-align: left; }
-        .quiz-card:hover { transform: translateY(-3px); background: #252525; }
-        #game-system { display: none; max-width: 1000px; width: 100%; position: relative; background: var(--card); padding: 30px; border-radius: 20px; text-align: center; }
+        .back-link { color: #888; text-decoration: none; font-size: 0.9em; display: block; margin-bottom: 20px; transition: 0.2s; }
+        .back-link:hover { color: var(--text); }
+        
+        .quiz-card { 
+            background: var(--card); padding: 25px; border-radius: 12px; 
+            margin-bottom: 20px; cursor: pointer; border-left: 6px solid var(--accent); 
+            text-decoration: none; color: white; display: block; transition: 0.3s;
+            text-align: left;
+        }
+        .quiz-card:hover { transform: translateY(-3px); background: #252525; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+
+        /* --- GAME SYSTEM --- */
+        #game-system { display: none; max-width: 1000px; width: 100%; position: relative; background: var(--card); padding: 30px; border-radius: 20px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+        
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
-        #timer { font-size: 2.5em; font-weight: bold; font-family: monospace; color: var(--accent); }
+        #timer { font-size: 2.5em; font-weight: bold; font-family: 'Courier New', monospace; color: var(--accent); }
+        .score-box { font-size: 1.2em; font-weight: bold; }
+
+        /* --- OVERLAYS --- */
         #pause-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; border-radius: 20px; display: none; flex-direction: column; justify-content: center; align-items: center; }
         #game-over { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--wrong); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 200; }
         .btn-large { padding: 15px 40px; font-size: 1.2em; cursor: pointer; border: none; border-radius: 50px; background: var(--accent); color: white; font-weight: bold; }
+
+        /* --- GAMEPLAY AREA --- */
+        #prompt-text { font-size: 1.8em; margin-bottom: 10px; min-height: 1.2em; }
         .checkbox-row { display: flex; justify-content: center; gap: 12px; margin: 25px 0; flex-wrap: wrap; }
-        .box { width: 40px; height: 40px; border: 2px solid #444; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px; transition: 0.2s; background: #111; }
-        .box.active { border-color: var(--accent); transform: scale(1.15); box-shadow: 0 0 15px rgba(239, 68, 68, 0.4); }
-        .box.filled { color: var(--correct); border-color: var(--correct); }
+        .box { 
+            width: 40px; height: 40px; border: 2px solid #444; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; 
+            font-weight: bold; font-size: 22px; transition: 0.2s; background: #111;
+        }
+        .box.active { border-color: var(--accent); transform: scale(1.15); box-shadow: 0 0 15px rgba(239, 68, 68, 0.4); border-width: 3px; }
+        .box.filled { color: var(--correct); border-color: var(--correct); background: rgba(46, 204, 113, 0.1); }
+
         .nav-area { display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; }
-        .nav-btn { background: #333; border: 2px solid #555; color: white; padding: 12px 35px; border-radius: 30px; cursor: pointer; font-weight: bold; }
+        .nav-btn { background: #333; border: 2px solid #555; color: white; padding: 12px 35px; border-radius: 30px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .nav-btn:hover { background: #444; border-color: white; }
+
         #grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; border-top: 1px solid var(--border); padding-top: 30px; }
-        .item-btn { padding: 12px 18px; background: #2a2a2a; color: #ddd; border: 1px solid #444; border-radius: 8px; cursor: pointer; flex-grow: 1; min-width: 150px; }
-        .item-btn.solved { opacity: 0.15; pointer-events: none; }
+        .item-btn { 
+            padding: 12px 18px; background: #2a2a2a; color: #ddd; border: 1px solid #444; 
+            border-radius: 8px; cursor: pointer; font-size: 14px; transition: 0.15s;
+            flex-grow: 1; min-width: 150px; max-width: 250px;
+        }
+        .item-btn:hover { background: #333; color: white; border-color: var(--accent); }
+        .item-btn.solved { opacity: 0.15; pointer-events: none; transform: scale(0.95); }
+
         .hidden-content { visibility: hidden; }
     </style>
 </head>
 <body>
 
 <div id="dashboard">
-    <a href="index.html" style="color: #666; text-decoration: none;">← Hauptportal</a>
-    <h1>Mega-Sorting: Geschichte</h1>
+    <a href="index.html" class="back-link">← Zurück zum Portal</a>
+    <h1>📜 Mega-Sorting: Geschichte</h1>
+    <p>Ordne die historischen Begriffe den richtigen Kategorien zu.</p>
     <br>
     
+    <a href="?quiz=ereignisgeschichte" class="quiz-card" style="border-left-color: #f39c12;">
+        <h3>📅 Globale Ereignisgeschichte</h3>
+        <p>Spätmittelalterliche Könige, Territorien und Rechtsdokumente.</p>
+    </a>
+
     <a href="?quiz=rom" class="quiz-card">
         <h3>🏛️ Das Antike Rom</h3>
-        <p>Von den Kaisern bis zur Infrastruktur. (Platzhalter-Thema)</p>
+        <p>Kaiser, Gesellschaft und Architektur des Imperium Romanum.</p>
     </a>
-    
-    <div class="quiz-card" style="opacity: 0.5; border-left-color: #555;">
-        <h3>⏳ Französische Revolution</h3>
-        <p>Demnächst verfügbar...</p>
-    </div>
 </div>
 
 <div id="game-over">
-    <h1>GAME OVER</h1>
+    <h1 style="font-size: 4em; margin-bottom: 10px;">GAME OVER</h1>
+    <p style="font-size: 1.5em; margin-bottom: 30px;">Ein historischer Irrtum! Das Spiel ist vorbei.</p>
     <button class="btn-large" onclick="location.search=''">ZUM DASHBOARD</button>
 </div>
 
 <div id="game-system">
     <div id="pause-overlay">
-        <h1>PAUSE</h1>
+        <h1 style="font-size: 3em; margin-bottom: 20px;">SPIEL PAUSIERT</h1>
         <button class="btn-large" onclick="togglePause()">WEITER</button>
     </div>
+
     <div class="header-top">
         <div id="timer">08:00</div>
-        <button onclick="togglePause()">PAUSE</button>
-        <div class="score-box">SCORE: <span id="score">0</span> / <span id="max-score">0</span></div>
+        <button onclick="togglePause()" style="background:none; border: 1px solid #666; color:#999; padding: 8px 15px; border-radius:5px; cursor:pointer;">PAUSE</button>
+        <div class="score-box">PUNKTE: <span id="score">0</span> / <span id="max-score">0</span></div>
     </div>
+
     <div id="game-main-area">
         <h2 id="prompt-text">Lädt...</h2>
         <div class="checkbox-row" id="checkboxes"></div>
+
         <div class="nav-area">
             <button class="nav-btn" onclick="moveSlot(-1)">← PREV</button>
             <button class="nav-btn" onclick="moveSlot(1)">NEXT →</button>
         </div>
+
         <div id="grid"></div>
     </div>
 </div>
 
 <script>
-    let rawData = []; let allSlots = []; let currentSlotIdx = 0; let timeLeft = 8 * 60; let isPaused = false; let timerInterval;
+    let rawData = [];
+    let allSlots = []; 
+    let currentSlotIdx = 0;
+    let timeLeft = 8 * 60;
+    let isPaused = false;
+    let timerInterval;
+
     const urlParams = new URLSearchParams(window.location.search);
     const quizName = urlParams.get('quiz');
 
     if (quizName) {
         document.getElementById('dashboard').style.display = 'none';
         document.getElementById('game-system').style.display = 'block';
+        loadQuiz(quizName);
+    }
+
+    function loadQuiz(name) {
         const script = document.createElement('script');
-        script.src = `levels/${name || quizName}.js`;
-        script.onload = () => { rawData = levelData; setupSlots(); startGame(); };
+        script.src = `levels/${name}.js`;
+        script.onload = () => {
+            rawData = levelData;
+            setupSlots();
+            startGame();
+        };
+        script.onerror = () => alert("Level-Datei konnte nicht geladen werden.");
         document.head.appendChild(script);
     }
 
@@ -90,19 +161,29 @@
         allSlots = [];
         rawData.forEach((level, lIdx) => {
             for (let i = 0; i < level.count; i++) {
-                allSlots.push({ categoryTitle: level.q, validAnswers: level.targets, levelIndex: lIdx, filledWith: null });
+                allSlots.push({
+                    categoryTitle: level.q,
+                    validAnswers: level.targets,
+                    levelIndex: lIdx,
+                    filledWith: null
+                });
             }
         });
         document.getElementById('max-score').textContent = allSlots.length;
     }
 
-    function startGame() { renderUI(); renderGrid(); startTimer(); }
+    function startGame() {
+        renderUI();
+        renderGrid();
+        startTimer();
+    }
 
     function startTimer() {
         timerInterval = setInterval(() => {
             if (!isPaused) {
                 timeLeft--;
-                let mins = Math.floor(timeLeft / 60); let secs = timeLeft % 60;
+                let mins = Math.floor(timeLeft / 60);
+                let secs = timeLeft % 60;
                 document.getElementById('timer').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
                 if (timeLeft <= 0) endGame();
             }
@@ -141,34 +222,52 @@
         grid.innerHTML = '';
         let words = [];
         rawData.forEach(l => words.push(...l.targets));
+        // Alphabetische Sortierung
         words.sort((a, b) => a.localeCompare(b, 'de')).forEach(word => {
             const btn = document.createElement('button');
             btn.className = 'item-btn';
             btn.textContent = word;
-            btn.onclick = () => {
-                if (isPaused) return;
-                const slot = allSlots[currentSlotIdx];
-                if (slot.validAnswers.includes(word)) {
-                    if (allSlots.some(s => s.filledWith === word)) return;
-                    slot.filledWith = word;
-                    btn.classList.add('solved');
-                    document.getElementById('score').textContent = allSlots.filter(s => s.filledWith).length;
-                    if (allSlots.every(s => s.filledWith)) { clearInterval(timerInterval); alert("Sieg!"); }
-                    else { findNext(); }
-                } else { endGame(); }
-            };
+            btn.onclick = () => handleInput(word, btn);
             grid.appendChild(btn);
         });
     }
 
-    function findNext() {
-        for (let i = 1; i <= allSlots.length; i++) {
-            let n = (currentSlotIdx + i) % allSlots.length;
-            if (!allSlots[n].filledWith) { currentSlotIdx = n; renderUI(); return; }
+    function handleInput(word, btn) {
+        if (isPaused) return;
+        const currentSlot = allSlots[currentSlotIdx];
+
+        if (currentSlot.validAnswers.includes(word)) {
+            if (allSlots.some(s => s.filledWith === word)) return;
+            currentSlot.filledWith = word;
+            btn.classList.add('solved');
+            document.getElementById('score').textContent = allSlots.filter(s => s.filledWith).length;
+            if (allSlots.every(s => s.filledWith)) {
+                clearInterval(timerInterval);
+                alert("HERAUSRAGEND! Alles historisch korrekt gelöst.");
+            } else {
+                findNextEmptySlot();
+            }
+        } else {
+            endGame();
         }
     }
 
-    function endGame() { clearInterval(timerInterval); document.getElementById('game-over').style.display = 'flex'; }
+    function findNextEmptySlot() {
+        for (let i = 1; i <= allSlots.length; i++) {
+            let next = (currentSlotIdx + i) % allSlots.length;
+            if (!allSlots[next].filledWith) {
+                currentSlotIdx = next;
+                renderUI();
+                return;
+            }
+        }
+    }
+
+    function endGame() {
+        clearInterval(timerInterval);
+        document.getElementById('game-over').style.display = 'flex';
+    }
 </script>
+
 </body>
 </html>
