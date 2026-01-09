@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Custom Sorting Gallery Builder</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { max-width: 900px; width: 100%; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #1a73e8; }
+        .setup-section, .game-section { display: none; }
+        .active { display: block; }
+        
+        /* Editor Styles */
+        .template-selector { margin-bottom: 20px; padding: 15px; background: #e8f0fe; border-radius: 8px; text-align: center; }
+        .level-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; padding: 10px; border-bottom: 1px solid #eee; }
+        input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        .cat-name { flex: 2; }
+        .cat-words { flex: 3; }
+        .cat-count { width: 40px; text-align: center; font-weight: bold; }
+
+        /* Game Styles */
+        #grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 20px; background: #f8f9fa; padding: 20px; border-radius: 8px; }
+        .item-btn { padding: 12px 18px; background: white; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; transition: 0.2s; font-weight: 500; }
+        .item-btn:hover { background: #eef2ff; border-color: #1a73e8; }
+        .item-btn.correct { background: #4caf50; color: white; border-color: #4caf50; pointer-events: none; }
+        .item-btn.wrong { animation: shake 0.3s; background: #ff5252; color: white; }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .btn-main { background: #1a73e8; color: white; padding: 10px 25px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; margin-top: 20px; }
+        #prompt-area { font-size: 22px; font-weight: bold; text-align: center; margin: 20px 0; min-height: 30px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="setup" class="setup-section active">
+        <h1>Quiz Creator</h1>
+        <div class="template-selector">
+            <strong>Schablone wählen:</strong>
+            <button onclick="applyTemplate('12-1')">12 to 1</button>
+            <button onclick="applyTemplate('all-fours')">All Fours (4x4)</button>
+            <button onclick="applyTemplate('custom')">Leeres Modell</button>
+        </div>
+        <div id="level-list">
+            </div>
+        <button class="btn-main" onclick="startGame()">Spiel starten!</button>
+    </div>
+
+    <div id="game" class="game-section">
+        <div id="stats" style="text-align: right;">Gefunden: <span id="score-display">0</span></div>
+        <div id="prompt-area"></div>
+        <div id="grid"></div>
+        <button class="btn-main" onclick="location.reload()">Neues Spiel erstellen</button>
+    </div>
+</div>
+
+<script>
+    let gameLevels = [];
+    let currentLevelIdx = 0;
+    let foundInLevel = 0;
+    let totalFound = 0;
+
+    // Erstellt eine Eingabezeile im Editor
+    function createRow(count = 1) {
+        const div = document.createElement('div');
+        div.className = 'level-row';
+        div.innerHTML = `
+            <span class="cat-count">${count}</span>
+            <input type="text" class="cat-name" placeholder="Kategoriename (z.B. Hauptstädte)">
+            <input type="text" class="cat-words" placeholder="Wörter mit Komma trennen (Wort1, Wort2...)">
+        `;
+        document.getElementById('level-list').appendChild(div);
+    }
+
+    // Wendet die Schablonen an
+    function applyTemplate(type) {
+        const list = document.getElementById('level-list');
+        list.innerHTML = '';
+        if (type === '12-1') {
+            for (let i = 12; i >= 1; i--) createRow(i);
+        } else if (type === 'all-fours') {
+            for (let i = 0; i < 4; i++) createRow(4);
+        } else {
+            createRow(1);
+        }
+    }
+
+    // Startet das Spiel basierend auf den Eingaben
+    function startGame() {
+        const rows = document.querySelectorAll('.level-row');
+        gameLevels = [];
+        let allPossibleWords = [];
+
+        rows.forEach(row => {
+            const name = row.querySelector('.cat-name').value;
+            const wordsStr = row.querySelector('.cat-words').value;
+            const count = parseInt(row.querySelector('.cat-count').innerText);
+            
+            if (name && wordsStr) {
+                const words = wordsStr.split(',').map(w => w.trim());
+                gameLevels.push({ question: `${count} ${name}`, targets: words, count: count });
+                allPossibleWords.push(...words);
+            }
+        });
+
+        if (gameLevels.length === 0) return alert("Bitte fülle mindestens eine Kategorie aus!");
+
+        // UI umschalten
+        document.getElementById('setup').classList.remove('active');
+        document.getElementById('game').classList.add('active');
+
+        // Gitter mischen und anzeigen
+        renderGrid(allPossibleWords.sort(() => Math.random() - 0.5));
+        renderCurrentLevel();
+    }
+
+    function renderGrid(words) {
+        const grid = document.getElementById('grid');
+        grid.innerHTML = '';
+        words.forEach(word => {
+            const btn = document.createElement('button');
+            btn.className = 'item-btn';
+            btn.textContent = word;
+            btn.onclick = () => handleGuess(word, btn);
+            grid.appendChild(btn);
+        });
+    }
+
+    function renderCurrentLevel() {
+        const lvl = gameLevels[currentLevelIdx];
+        document.getElementById('prompt-area').innerText = lvl.question;
+        foundInLevel = 0;
+    }
+
+    function handleGuess(word, btn) {
+        const lvl = gameLevels[currentLevelIdx];
+        if (lvl.targets.includes(word)) {
+            btn.classList.add('correct');
+            foundInLevel++;
+            totalFound++;
+            document.getElementById('score-display').innerText = totalFound;
+
+            if (foundInLevel === lvl.count) {
+                currentLevelIdx++;
+                if (currentLevelIdx < gameLevels.length) {
+                    setTimeout(renderCurrentLevel, 600);
+                } else {
+                    document.getElementById('prompt-area').innerText = "🎉 Glückwunsch! Quiz gelöst!";
+                }
+            }
+        } else {
+            btn.classList.add('wrong');
+            setTimeout(() => btn.classList.remove('wrong'), 400);
+        }
+    }
+
+    // Initialisierung mit einem Standard-Feld
+    applyTemplate('custom');
+</script>
+
+</body>
+</html>
