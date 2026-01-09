@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mega-Sorting Gallery - Professional Edition</title>
+    <title>Mega-Sorting Gallery - Geografie</title>
     <style>
         :root {
             --bg: #121212;
             --card: #1e1e1e;
-            --accent: #ff4500;
+            --accent: #3498db; /* Blau-Ton für Geografie */
             --correct: #2ecc71;
             --wrong: #e74c3c;
             --text: #ffffff;
@@ -27,14 +27,19 @@
         }
 
         /* --- DASHBOARD --- */
-        #dashboard { max-width: 800px; width: 100%; text-align: center; }
+        #dashboard { max-width: 900px; width: 100%; text-align: center; }
+        .back-link { color: #888; text-decoration: none; font-size: 0.9em; display: block; margin-bottom: 20px; transition: 0.2s; }
+        .back-link:hover { color: var(--text); }
+        
         .quiz-card { 
-            background: var(--card); padding: 25px; border-radius: 12px; 
-            margin-bottom: 20px; cursor: pointer; border-left: 6px solid var(--accent); 
+            background: var(--card); padding: 20px; border-radius: 12px; 
+            margin-bottom: 15px; cursor: pointer; border-left: 6px solid var(--accent); 
             text-decoration: none; color: white; display: block; transition: 0.3s;
             text-align: left;
         }
         .quiz-card:hover { transform: translateY(-3px); background: #252525; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .quiz-card h3 { margin: 0 0 5px 0; color: var(--accent); }
+        .quiz-card p { margin: 0; font-size: 0.85em; color: #bbb; line-height: 1.4; }
 
         /* --- GAME SYSTEM --- */
         #game-system { display: none; max-width: 1000px; width: 100%; position: relative; background: var(--card); padding: 30px; border-radius: 20px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
@@ -43,20 +48,18 @@
         #timer { font-size: 2.5em; font-weight: bold; font-family: 'Courier New', monospace; color: var(--accent); }
         .score-box { font-size: 1.2em; font-weight: bold; }
 
-        /* --- OVERLAYS --- */
         #pause-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; border-radius: 20px; display: none; flex-direction: column; justify-content: center; align-items: center; }
         #game-over { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--wrong); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 200; }
         .btn-large { padding: 15px 40px; font-size: 1.2em; cursor: pointer; border: none; border-radius: 50px; background: var(--accent); color: white; font-weight: bold; }
 
-        /* --- GAMEPLAY AREA --- */
-        #prompt-text { font-size: 1.8em; margin-bottom: 10px; min-height: 1.2em; }
-        .checkbox-row { display: flex; justify-content: center; gap: 12px; margin: 25px 0; flex-wrap: wrap; }
+        #prompt-text { font-size: 1.6em; margin-bottom: 10px; min-height: 1.2em; }
+        .checkbox-row { display: flex; justify-content: center; gap: 10px; margin: 25px 0; flex-wrap: wrap; }
         .box { 
-            width: 40px; height: 40px; border: 2px solid #444; border-radius: 8px;
+            width: 35px; height: 35px; border: 2px solid #444; border-radius: 8px;
             display: flex; align-items: center; justify-content: center; 
-            font-weight: bold; font-size: 22px; transition: 0.2s; background: #111;
+            font-weight: bold; font-size: 18px; transition: 0.2s; background: #111;
         }
-        .box.active { border-color: var(--accent); transform: scale(1.15); box-shadow: 0 0 15px rgba(255, 69, 0, 0.4); border-width: 3px; }
+        .box.active { border-color: var(--accent); transform: scale(1.15); box-shadow: 0 0 15px rgba(52, 152, 219, 0.4); border-width: 3px; }
         .box.filled { color: var(--correct); border-color: var(--correct); background: rgba(46, 204, 113, 0.1); }
 
         .nav-area { display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; }
@@ -65,9 +68,9 @@
 
         #grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; border-top: 1px solid var(--border); padding-top: 30px; }
         .item-btn { 
-            padding: 12px 18px; background: #2a2a2a; color: #ddd; border: 1px solid #444; 
-            border-radius: 8px; cursor: pointer; font-size: 14px; transition: 0.15s;
-            flex-grow: 1; min-width: 150px; max-width: 250px;
+            padding: 10px 15px; background: #2a2a2a; color: #ddd; border: 1px solid #444; 
+            border-radius: 8px; cursor: pointer; font-size: 13px; transition: 0.15s;
+            flex-grow: 1; min-width: 140px; max-width: 220px;
         }
         .item-btn:hover { background: #333; color: white; border-color: var(--accent); }
         .item-btn.solved { opacity: 0.15; pointer-events: none; transform: scale(0.95); }
@@ -78,38 +81,82 @@
 <body>
 
 <div id="dashboard">
-    <h1>Mega-Sorting Gallery</h1>
-    <p>Wähle ein Thema und fülle die Slots – Alphabetisch sortiert und im Sudden Death Modus.</p>
+    <a href="index.html" class="back-link">← Zum Hauptportal</a>
+    <h1>🌍 Mega-Sorting: Geografie</h1>
+    <p>Ordne geowissenschaftliche Begriffe den richtigen Kategorien zu.</p>
     <br>
-    
+
+    <a href="?quiz=geologie" class="quiz-card">
+        <h3>🗿 Geologie & Erdgeschichte</h3>
+        <p>Vom Schalenbau der Erde bis zur Stratigraphie und dem Kalendermodell der Erdentwicklung.</p>
+    </a>
+
+    <a href="?quiz=minerale_gesteine" class="quiz-card">
+        <h3>💎 Minerale & Gesteine</h3>
+        <p>Physikalische Eigenschaften, chemische Zusammensetzung und der Kreislauf der Gesteine.</p>
+    </a>
+
+    <a href="?quiz=tektonik" class="quiz-card">
+        <h3>🏔️ Tektonik & Strukturgeologie</h3>
+        <p>Deformationsarten, Störungen und das Fallbeispiel der Himalaya-Orogenese.</p>
+    </a>
+
+    <a href="?quiz=historische_geologie" class="quiz-card">
+        <h3>🕰️ Historische Geologie & Paläoklimatologie</h3>
+        <p>Proxy-Archive wie Eisbohrkerne und Datierungsmethoden der Erdgeschichte.</p>
+    </a>
+
+    <a href="?quiz=klimatologie" class="quiz-card" style="border-left-color: #2980b9;">
+        <h3>☀️ Grundlagen der Klimatologie</h3>
+        <p>Strahlungsgesetze, Albedo und die Solarkonstante von $1361~W/m^2$.</p>
+    </a>
+
+    <a href="?quiz=klimatologie_prozesse" class="quiz-card" style="border-left-color: #2980b9;">
+        <h3>💧 Atmosphärische Prozesse</h3>
+        <p>Phasenübergänge des Wassers, Wolkenbildung und thermodynamische Gradienten.</p>
+    </a>
+
+    <a href="?quiz=klimatologie_dynamik" class="quiz-card" style="border-left-color: #f39c12;">
+        <h3>🌪️ Windsysteme & Dynamik</h3>
+        <p>Corioliskraft, kleinräumige Zirkulationen und das geostrophische Gleichgewicht.</p>
+    </a>
+
+    <a href="?quiz=klimazonen_zirkulation" class="quiz-card" style="border-left-color: #16a085;">
+        <h3>🌀 Globale Zirkulation & Zellen</h3>
+        <p>Die Hadley-Zelle, ITCZ und der Lebenszyklus außertropischer Zyklonen.</p>
+    </a>
+
+    <a href="?quiz=klimawandel_klassifikation" class="quiz-card" style="border-left-color: #c0392b;">
+        <h3>🌡️ Klimawandel & Klassifikation</h3>
+        <p>Köppen-Geiger-System und die aktuellen Syntheseberichte des IPCC.</p>
+    </a>
+
     <a href="?quiz=vulkane" class="quiz-card">
         <h3>🌋 Vulkanismus Spezial</h3>
-        <p>Eigenschaften, Typen und globale Folgen.</p>
+        <p>Eruptionstypen, Magmenzusammensetzung und vulkanische Gefahren.</p>
     </a>
+
     <a href="?quiz=nargis" class="quiz-card">
-        <h3>🌪️ Zyklon Nargis & Verwundbarkeit</h3>
-        <p>Analyse der Katastrophe in Myanmar.</p>
+        <h3>🌪️ Fallstudie: Zyklon Nargis</h3>
+        <p>Analyse von Verwundbarkeit und politischer Reaktion in Myanmar.</p>
     </a>
-    <a href="?quiz=geoswinde" class="quiz-card">
-        <h3>🌬️ Dynamik der Atmosphäre</h3>
-        <p>Globale Windsysteme und physikalische Wellen.</p>
-    </a>
-    <a href="?quiz=wasserkreislauf" class="quiz-card" style="border-left-color: #3498db;">
-        <h3>💧 Wasserkreislauf & Hydrologie</h3>
-        <p>Vom Niederschlag bis zum Grundwasserfluss. (8 bis 1 Modus).</p>
+
+    <a href="?quiz=wasserkreislauf" class="quiz-card">
+        <h3>🌊 Hydrologie & Wasserkreislauf</h3>
+        <p>Globale Speicher, Prozesse und der menschliche Wasserfußabdruck.</p>
     </a>
 </div>
 
 <div id="game-over">
-    <h1>GAME OVER</h1>
-    <p>Das war leider falsch. Versuche es erneut!</p>
-    <button class="btn-large" onclick="location.search=''">ZUM HAUPTMENÜ</button>
+    <h1 style="font-size: 3.5em; margin-bottom: 10px;">GAME OVER</h1>
+    <p style="font-size: 1.3em; margin-bottom: 30px;">Das war leider falsch. Ein Geograf irrt sich nie – er interpretiert nur neu!</p>
+    <button class="btn-large" onclick="location.search=''">ZUM DASHBOARD</button>
 </div>
 
 <div id="game-system">
     <div id="pause-overlay">
-        <h1>PAUSE</h1>
-        <button class="btn-large" onclick="togglePause()">WEITER</button>
+        <h1>SPIEL PAUSIERT</h1>
+        <button class="btn-large" onclick="togglePause()">WEITER SPIELEN</button>
     </div>
 
     <div class="header-top">
@@ -121,12 +168,10 @@
     <div id="game-main-area">
         <h2 id="prompt-text">Lädt...</h2>
         <div class="checkbox-row" id="checkboxes"></div>
-
         <div class="nav-area">
             <button class="nav-btn" onclick="moveSlot(-1)">← PREV</button>
             <button class="nav-btn" onclick="moveSlot(1)">NEXT →</button>
         </div>
-
         <div id="grid"></div>
     </div>
 </div>
@@ -156,7 +201,7 @@
             setupSlots();
             startGame();
         };
-        script.onerror = () => alert("Level konnte nicht geladen werden.");
+        script.onerror = () => alert("Level-Datei konnte nicht geladen werden.");
         document.head.appendChild(script);
     }
 
@@ -164,22 +209,13 @@
         allSlots = [];
         rawData.forEach((level, lIdx) => {
             for (let i = 0; i < level.count; i++) {
-                allSlots.push({
-                    categoryTitle: level.q,
-                    validAnswers: level.targets,
-                    levelIndex: lIdx,
-                    filledWith: null
-                });
+                allSlots.push({ categoryTitle: level.q, validAnswers: level.targets, levelIndex: lIdx, filledWith: null });
             }
         });
         document.getElementById('max-score').textContent = allSlots.length;
     }
 
-    function startGame() {
-        renderUI();
-        renderGrid();
-        startTimer();
-    }
+    function startGame() { renderUI(); renderGrid(); startTimer(); }
 
     function startTimer() {
         timerInterval = setInterval(() => {
@@ -225,6 +261,7 @@
         grid.innerHTML = '';
         let words = [];
         rawData.forEach(l => words.push(...l.targets));
+        // Alphabetische Sortierung
         words.sort((a, b) => a.localeCompare(b, 'de')).forEach(word => {
             const btn = document.createElement('button');
             btn.className = 'item-btn';
@@ -244,7 +281,7 @@
             document.getElementById('score').textContent = allSlots.filter(s => s.filledWith).length;
             if (allSlots.every(s => s.filledWith)) {
                 clearInterval(timerInterval);
-                alert("Perfekt gelöst!");
+                alert("HERAUSRAGEND! Geowissenschaftlich einwandfrei.");
             } else {
                 findNextEmptySlot();
             }
@@ -256,11 +293,7 @@
     function findNextEmptySlot() {
         for (let i = 1; i <= allSlots.length; i++) {
             let next = (currentSlotIdx + i) % allSlots.length;
-            if (!allSlots[next].filledWith) {
-                currentSlotIdx = next;
-                renderUI();
-                return;
-            }
+            if (!allSlots[next].filledWith) { currentSlotIdx = next; renderUI(); return; }
         }
     }
 
