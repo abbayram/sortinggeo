@@ -3,48 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mega-Sorting Gallery - Geschichte</title>
+    <title>Mega-Sorting Geschichte</title>
     <style>
         :root { --bg: #121212; --card: #1e1e1e; --accent: #c0392b; --correct: #2ecc71; --wrong: #e74c3c; --text: #ffffff; --border: #333; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
         #dashboard { max-width: 1000px; width: 100%; text-align: center; }
-        .section-header { text-align: left; margin: 30px 0 15px 5px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 5px; font-size: 1.2em; font-weight: bold; }
-        .quiz-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; margin-bottom: 40px; }
+        .section-header { text-align: left; margin: 30px 0 15px 5px; color: var(--accent); border-bottom: 2px solid var(--border); padding-bottom: 5px; font-size: 1.4em; font-weight: bold; }
+        .quiz-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin-bottom: 40px; }
         .quiz-card { background: var(--card); padding: 18px; border-radius: 12px; cursor: pointer; border-left: 5px solid var(--accent); text-decoration: none; color: white; display: flex; flex-direction: column; transition: 0.3s; text-align: left; }
         .quiz-card:hover { transform: translateY(-3px); background: #252525; }
-        #game-system { display: none; max-width: 1000px; width: 100%; position: relative; background: var(--card); padding: 30px; border-radius: 20px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+        #game-system { display: none; max-width: 1000px; width: 100%; background: var(--card); padding: 30px; border-radius: 20px; text-align: center; position: relative; }
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
-        #timer { font-size: 2.5em; font-weight: bold; color: var(--accent); }
-        #game-over { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(192, 57, 43, 0.95); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 200; backdrop-filter: blur(10px); }
+        #timer { font-size: 2.5em; font-weight: bold; color: var(--accent); font-family: monospace; }
+        #game-over { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(192, 57, 43, 0.95); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(10px); }
         .game-over-buttons { display: flex; gap: 20px; margin-top: 30px; }
         .btn-large { padding: 15px 40px; font-size: 1.1em; cursor: pointer; border: none; border-radius: 50px; background: var(--accent); color: white; font-weight: bold; transition: 0.2s; }
         .btn-secondary { background: #333; }
         #grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; border-top: 1px solid var(--border); padding-top: 30px; }
         .item-btn { padding: 10px 15px; background: #2a2a2a; color: #ddd; border: 1px solid #444; border-radius: 8px; cursor: pointer; font-size: 13px; flex-grow: 1; min-width: 140px; max-width: 220px; }
-        .item-btn.solved { opacity: 0.15; pointer-events: none; }
+        .item-btn.solved { opacity: 0.1; pointer-events: none; }
         .box { width: 35px; height: 35px; border: 2px solid #444; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; background: #111; }
-        .box.active { border-color: var(--accent); transform: scale(1.15); border-width: 3px; }
+        .box.active { border-color: var(--accent); border-width: 3px; transform: scale(1.1); }
         .box.filled { color: var(--correct); border-color: var(--correct); }
     </style>
 </head>
 <body>
+
 <div id="dashboard">
-    <h1>📜 Historische Geographie Portal</h1>
-    <div class="section-header">🌍 Erdgeschichte</div>
+    <h1>📜 Historisches Portal</h1>
+
+    <div class="section-header">🏛️ Antike</div>
     <div class="quiz-grid">
-        <a href="?quiz=historische_geologie" class="quiz-card"><h3>Historische Geologie</h3><p>Zeitskalen und Datierung</p></a>
-        <a href="?quiz=geologie" class="quiz-card"><h3>Entstehung der Erde</h3><p>Urknall und Erdentstehung</p></a>
+        <a href="?quiz=rom" class="quiz-card"><h3>Das antike Rom</h3><p>Aufstieg, Institutionen und Fall des Imperiums.</p></a>
     </div>
-    <div class="section-header" style="color: #e67e22;">🏛️ Disziplingeschichte</div>
+
+    <div class="section-header" style="color: #e67e22; border-color: #e67e22;">⛪ Mittelalter & Kirche</div>
     <div class="quiz-grid">
-        <a href="?quiz=laenderkunde" class="quiz-card" style="border-left-color: #e67e22;"><h3>Etappe I: Länderkunde</h3><p>Klassische Geographie</p></a>
-        <a href="?quiz=gesellschaftsorientierung" class="quiz-card" style="border-left-color: #e67e22;"><h3>Etappe II: Raumwissenschaft</h3><p>Quantifizierung und 1969</p></a>
-        <a href="?quiz=humangeographie_postmoderne" class="quiz-card" style="border-left-color: #e67e22;"><h3>Etappe III: Postmoderne</h3><p>Cultural Turn und Dekonstruktion</p></a>
+        <a href="?quiz=kirchengeschichte" class="quiz-card" style="border-left-color: #e67e22;"><h3>Kirchengeschichte</h3><p>Strukturen und Dogmen des Mittelalters.</p></a>
+        <a href="?quiz=investiturstreit" class="quiz-card" style="border-left-color: #e67e22;"><h3>Investiturstreit</h3><p>Konflikt zwischen Kaiser und Papst.</p></a>
+        <a href="?quiz=kirchenkrise" class="quiz-card" style="border-left-color: #e67e22;"><h3>Kirchenkrise</h3><p>Schismen und Herausforderungen.</p></a>
+        <a href="?quiz=koenigtum" class="quiz-card" style="border-left-color: #e67e22;"><h3>Königtum</h3><p>Herrschaftsformen und Dynastien.</p></a>
+        <a href="?quiz=moenche_nonnen" class="quiz-card" style="border-left-color: #e67e22;"><h3>Mönche & Nonnen</h3><p>Ordensleben und Klöster.</p></a>
+    </div>
+
+    <div class="section-header" style="color: #7f8c8d; border-color: #7f8c8d;">📅 Ereignisgeschichte</div>
+    <div class="quiz-grid">
+        <a href="?quiz=ereignisgeschichte" class="quiz-card" style="border-left-color: #7f8c8d;"><h3>Ereignisgeschichte</h3><p>Chronologische Meilensteine.</p></a>
     </div>
 </div>
 
 <div id="game-over">
-    <h1 style="font-size: 3.5em;">ZEITREISE BEENDET</h1>
+    <h1>ZEITREISE BEENDET</h1>
     <div class="game-over-buttons">
         <button class="btn-large" onclick="resetGame()">NOCHMAL VERSUCHEN</button>
         <button class="btn-large btn-secondary" onclick="location.search=''">DASHBOARD</button>
@@ -54,13 +63,13 @@
 <div id="game-system">
     <div class="header-top">
         <div id="timer">08:00</div>
-        <div class="score-box">PUNKTE: <span id="score">0</span> / <span id="max-score">0</span></div>
+        <div style="font-size: 1.2em;">ERKENNTNISSE: <span id="score">0</span> / <span id="max-score">0</span></div>
     </div>
     <h2 id="prompt-text">Lädt...</h2>
     <div class="checkbox-row" id="checkboxes"></div>
     <div style="display:flex; justify-content:center; gap:20px; margin-bottom:20px;">
-        <button onclick="moveSlot(-1)" style="padding:10px 20px; cursor:pointer;">← Zurück</button>
-        <button onclick="moveSlot(1)" style="padding:10px 20px; cursor:pointer;">Weiter →</button>
+        <button class="btn-large btn-secondary" onclick="moveSlot(-1)">← Zurück</button>
+        <button class="btn-large btn-secondary" onclick="moveSlot(1)">Weiter →</button>
     </div>
     <div id="grid"></div>
 </div>
@@ -97,7 +106,7 @@
     }
     function handleInput(word, btn) {
         const currentSlot = allSlots[currentSlotIdx];
-        if (currentSlot.validAnswers.includes(word)) { if (allSlots.some(s => s.filledWith === word)) return; currentSlot.filledWith = word; btn.classList.add('solved'); document.getElementById('score').textContent = allSlots.filter(s => s.filledWith).length; if (allSlots.every(s => s.filledWith)) { clearInterval(timerInterval); alert("Bestanden!"); } else findNextEmptySlot(); } else endGame();
+        if (currentSlot.validAnswers.includes(word)) { if (allSlots.some(s => s.filledWith === word)) return; currentSlot.filledWith = word; btn.classList.add('solved'); document.getElementById('score').textContent = allSlots.filter(s => s.filledWith).length; if (allSlots.every(s => s.filledWith)) { clearInterval(timerInterval); alert("Herausragend!"); } else findNextEmptySlot(); } else endGame();
     }
     function findNextEmptySlot() { for (let i = 1; i <= allSlots.length; i++) { let next = (currentSlotIdx + i) % allSlots.length; if (!allSlots[next].filledWith) { currentSlotIdx = next; renderUI(); return; } } }
     function endGame() { clearInterval(timerInterval); document.getElementById('game-over').style.display = 'flex'; }
