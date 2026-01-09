@@ -8,7 +8,7 @@
         :root {
             --bg: #121212;
             --card: #1e1e1e;
-            --accent: #ef4444; /* Rot-Ton für Geschichte */
+            --accent: #ef4444; /* Geschichts-Rot */
             --correct: #2ecc71;
             --wrong: #e74c3c;
             --text: #ffffff;
@@ -27,17 +27,19 @@
         }
 
         /* --- DASHBOARD --- */
-        #dashboard { max-width: 800px; width: 100%; text-align: center; }
-        .back-link { color: #888; text-decoration: none; font-size: 0.9em; display: block; margin-bottom: 20px; transition: 0.2s; }
+        #dashboard { max-width: 900px; width: 100%; text-align: center; }
+        .back-link { color: #888; text-decoration: none; font-size: 0.9em; display: block; margin-bottom: 20px; }
         .back-link:hover { color: var(--text); }
         
         .quiz-card { 
-            background: var(--card); padding: 25px; border-radius: 12px; 
-            margin-bottom: 20px; cursor: pointer; border-left: 6px solid var(--accent); 
+            background: var(--card); padding: 20px; border-radius: 12px; 
+            margin-bottom: 15px; cursor: pointer; border-left: 6px solid var(--accent); 
             text-decoration: none; color: white; display: block; transition: 0.3s;
             text-align: left;
         }
         .quiz-card:hover { transform: translateY(-3px); background: #252525; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .quiz-card h3 { margin: 0 0 5px 0; color: var(--accent); }
+        .quiz-card p { margin: 0; font-size: 0.9em; color: #bbb; }
 
         /* --- GAME SYSTEM --- */
         #game-system { display: none; max-width: 1000px; width: 100%; position: relative; background: var(--card); padding: 30px; border-radius: 20px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
@@ -52,7 +54,7 @@
         .btn-large { padding: 15px 40px; font-size: 1.2em; cursor: pointer; border: none; border-radius: 50px; background: var(--accent); color: white; font-weight: bold; }
 
         /* --- GAMEPLAY AREA --- */
-        #prompt-text { font-size: 1.8em; margin-bottom: 10px; min-height: 1.2em; }
+        #prompt-text { font-size: 1.6em; margin-bottom: 10px; min-height: 1.2em; }
         .checkbox-row { display: flex; justify-content: center; gap: 12px; margin: 25px 0; flex-wrap: wrap; }
         .box { 
             width: 40px; height: 40px; border: 2px solid #444; border-radius: 8px;
@@ -81,38 +83,63 @@
 <body>
 
 <div id="dashboard">
-    <a href="index.html" class="back-link">← Zurück zum Portal</a>
+    <a href="index.html" class="back-link">← Zum Portal</a>
     <h1>📜 Mega-Sorting: Geschichte</h1>
-    <p>Ordne die historischen Begriffe den richtigen Kategorien zu.</p>
+    <p>Wähle ein Level und ordne die Begriffe zu. Alphabetisch sortiert & Sudden Death!</p>
     <br>
-    
-    <a href="?quiz=ereignisgeschichte" class="quiz-card" style="border-left-color: #f39c12;">
-        <h3>📅 Globale Ereignisgeschichte</h3>
-        <p>Spätmittelalterliche Könige, Territorien und Rechtsdokumente.</p>
+
+    <a href="?quiz=ereignisgeschichte" class="quiz-card">
+        <h3>📅 Ereignisgeschichte</h3>
+        <p>Könige des Spätmittelalters, Reichsreform und Territorien.</p>
     </a>
 
     <a href="?quiz=rom" class="quiz-card">
         <h3>🏛️ Das Antike Rom</h3>
-        <p>Kaiser, Gesellschaft und Architektur des Imperium Romanum.</p>
+        <p>Kaiser, Gottheiten und Bauwerke des Imperiums.</p>
+    </a>
+
+    <a href="?quiz=kirchengeschichte" class="quiz-card">
+        <h3>⛪ Papsttum & Christianisierung</h3>
+        [cite_start]<p>Patriarchate und Missionszentren des frühen Mittelalters[cite: 14, 16].</p>
+    </a>
+
+    <a href="?quiz=koenigtum" class="quiz-card">
+        <h3>👑 Königtum & Kurfürsten</h3>
+        [cite_start]<p>Königserhebung, Goldene Bulle und Reichsinsignien[cite: 337, 349, 452].</p>
+    </a>
+
+    <a href="?quiz=investiturstreit" class="quiz-card">
+        <h3>⚔️ Der Investiturstreit</h3>
+        [cite_start]<p>Konflikt zwischen Kaiser und Papst sowie der Dictatus Papae[cite: 643, 748, 853].</p>
+    </a>
+
+    <a href="?quiz=moenche_nonnen" class="quiz-card">
+        <h3>🙏 Mönche & Nonnen</h3>
+        [cite_start]<p>Religiöse Lebensformen, Bettelorden und Reformklöster[cite: 880, 899, 922].</p>
+    </a>
+
+    <a href="?quiz=kirchenkrise" class="quiz-card">
+        <h3>🏚️ Kirchenkrise im Spätmittelalter</h3>
+        [cite_start]<p>Schisma, das Papsttum in Avignon und die Reformkonzilien[cite: 1380, 1409, 1456].</p>
     </a>
 </div>
 
 <div id="game-over">
     <h1 style="font-size: 4em; margin-bottom: 10px;">GAME OVER</h1>
     <p style="font-size: 1.5em; margin-bottom: 30px;">Ein historischer Irrtum! Das Spiel ist vorbei.</p>
-    <button class="btn-large" onclick="location.search=''">ZUM DASHBOARD</button>
+    <button class="btn-large" onclick="location.search=''">ZUM HAUPTMENÜ</button>
 </div>
 
 <div id="game-system">
     <div id="pause-overlay">
-        <h1 style="font-size: 3em; margin-bottom: 20px;">SPIEL PAUSIERT</h1>
+        <h1 style="font-size: 3em; margin-bottom: 20px;">PAUSE</h1>
         <button class="btn-large" onclick="togglePause()">WEITER</button>
     </div>
 
     <div class="header-top">
         <div id="timer">08:00</div>
         <button onclick="togglePause()" style="background:none; border: 1px solid #666; color:#999; padding: 8px 15px; border-radius:5px; cursor:pointer;">PAUSE</button>
-        <div class="score-box">PUNKTE: <span id="score">0</span> / <span id="max-score">0</span></div>
+        <div class="score-box">SCORE: <span id="score">0</span> / <span id="max-score">0</span></div>
     </div>
 
     <div id="game-main-area">
@@ -153,7 +180,7 @@
             setupSlots();
             startGame();
         };
-        script.onerror = () => alert("Level-Datei konnte nicht geladen werden.");
+        script.onerror = () => alert("Level konnte nicht geladen werden.");
         document.head.appendChild(script);
     }
 
@@ -222,7 +249,6 @@
         grid.innerHTML = '';
         let words = [];
         rawData.forEach(l => words.push(...l.targets));
-        // Alphabetische Sortierung
         words.sort((a, b) => a.localeCompare(b, 'de')).forEach(word => {
             const btn = document.createElement('button');
             btn.className = 'item-btn';
@@ -235,7 +261,6 @@
     function handleInput(word, btn) {
         if (isPaused) return;
         const currentSlot = allSlots[currentSlotIdx];
-
         if (currentSlot.validAnswers.includes(word)) {
             if (allSlots.some(s => s.filledWith === word)) return;
             currentSlot.filledWith = word;
@@ -268,6 +293,5 @@
         document.getElementById('game-over').style.display = 'flex';
     }
 </script>
-
 </body>
 </html>
