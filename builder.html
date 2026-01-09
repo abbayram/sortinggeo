@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz Builder - Admin Area</title>
+    <style>
+        body { font-family: sans-serif; background: #2c3e50; color: white; padding: 40px; }
+        .builder-box { max-width: 800px; margin: auto; background: #34495e; padding: 20px; border-radius: 10px; }
+        .row { display: flex; gap: 10px; margin-bottom: 10px; }
+        input { padding: 8px; flex: 1; border-radius: 4px; border: none; }
+        .output { width: 100%; height: 150px; margin-top: 20px; font-family: monospace; }
+        button { padding: 10px; cursor: pointer; background: #27ae60; color: white; border: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="builder-box">
+    <h1>Quiz Builder</h1>
+    <p>Erstelle hier dein Quiz und kopiere den Code unten.</p>
+    <div id="editor-rows"></div>
+    <button onclick="addRow()">+ Zeile hinzufügen</button>
+    <button onclick="generateJSON()" style="background: #2980b9;">JSON Code generieren</button>
+    
+    <textarea id="json-output" class="output" placeholder="Hier erscheint dein Quiz-Code..."></textarea>
+</div>
+
+<script>
+    function addRow() {
+        const div = document.createElement('div');
+        div.className = 'row';
+        div.innerHTML = `
+            <input type="number" class="cnt" placeholder="Anzahl" style="flex:0.2">
+            <input type="text" class="name" placeholder="Kategoriename">
+            <input type="text" class="words" placeholder="Wörter (mit Komma trennen)">
+        `;
+        document.getElementById('editor-rows').appendChild(div);
+    }
+
+    function generateJSON() {
+        const levels = [];
+        const allItems = [];
+        document.querySelectorAll('.row').forEach(row => {
+            const words = row.querySelector('.words').value.split(',').map(s => s.trim());
+            levels.push({
+                question: row.querySelector('.cnt').value + " " + row.querySelector('.name').value,
+                targets: words,
+                count: parseInt(row.querySelector('.cnt').value)
+            });
+            allItems.push(...words);
+        });
+        const result = { levels, allItems: [...new Set(allItems)] };
+        document.getElementById('json-output').value = JSON.stringify(result, null, 2);
+    }
+    addRow(); // Start mit einer Zeile
+</script>
+</body>
+</html>
