@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mega-Sorting Portal</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #f8fafc;
+            --accent-geo: #3b82f6;
+            --accent-hist: #ef4444;
+        }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 { font-size: 3em; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 4px; }
+        .portal-grid { display: flex; gap: 30px; width: 90%; max-width: 800px; }
+        .portal-card {
+            flex: 1;
+            background: var(--card);
+            padding: 40px;
+            border-radius: 20px;
+            text-decoration: none;
+            color: white;
+            text-align: center;
+            transition: 0.3s;
+            border-bottom: 8px solid transparent;
+        }
+        .portal-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        .geo { border-color: var(--accent-geo); }
+        .hist { border-color: var(--accent-hist); }
+        .icon { font-size: 80px; margin-bottom: 20px; display: block; }
+        h2 { margin: 0; font-size: 1.8em; }
+        p { opacity: 0.7; }
+    </style>
+</head>
+<body>
+
+    <h1>Wissens-Sortierung</h1>
+
+    <div class="portal-grid">
+        <a href="geo.html" class="portal-card geo">
+            <span class="icon">🌍</span>
+            <h2>Geografie</h2>
+            <p>Vulkane, Atmosphäre und Hydrologie</p>
+        </a>
+
+        <a href="geschichte.html" class="portal-card hist">
+            <span class="icon">📜</span>
+            <h2>Geschichte</h2>
+            <p>Antike, Kriege und Epochen</p>
+        </a>
+    </div>
+
+</body>
+</html>
